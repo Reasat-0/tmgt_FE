@@ -1,130 +1,167 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+ 
+/* ============================================================
+   DESIGN TOKENS — Tour Management App
+   Logo Source: Deep Teal + Forest Green + Golden Accent
+   ============================================================ */
+ 
+@theme {
+ 
+  /* ── Brand Scale (Teal — from logo circle) ── */
+  --color-brand-50:  #E8F5F5;
+  --color-brand-100: #C8E8E8;
+  --color-brand-200: #9ED4D4;
+  --color-brand-300: #4ECFB8;
+  --color-brand-400: #1DBB9F;
+  --color-brand-500: #14A085;
+  --color-brand-600: #0D7377;
+  --color-brand-700: #0A5A5E;
+  --color-brand-800: #074244;
+  --color-brand-900: #042C2E;
+ 
+  /* ── Accent Scale (Gold — from logo compass star) ── */
+  --color-accent-50:  #FFFBEC;
+  --color-accent-100: #FEF7DC;
+  --color-accent-200: #FDEDB8;
+  --color-accent-300: #F9DC80;
+  --color-accent-400: #F5D57A;
+  --color-accent-500: #F2C94C;
+  --color-accent-600: #C9A030;
+  --color-accent-700: #A07800;
+  --color-accent-800: #6B5000;
+  --color-accent-900: #3D2E00;
+ 
+  /* ── Surface — Base ── */
+  --color-surfaceBasePrimary:   #FFFFFF;
+  --color-surfaceBaseSecondary: #F4F8F8;
+  --color-surfaceBaseTertiary:  #E8F2F2;
+  --color-surfaceBaseInverse:   #042C2E;
+ 
+  /* ── Surface — Brand ── */
+  --color-surfaceBrandPrimary:  #0D7377;
+  --color-surfaceBrandSubtle:   #D6EFEE;
+ 
+  /* ── Surface — Accent ── */
+  --color-surfaceAccentPrimary: #F2C94C;
+  --color-surfaceAccentSubtle:  #FEF7DC;
+ 
+  /* ── Surface — Green ── */
+  --color-surfaceGreenPrimary:  #14A085;
+  --color-surfaceGreenSubtle:   #D4F0EA;
+ 
+  /* ── Text ── */
+  --color-textPrimary:   #042C2E;
+  --color-textSecondary: #3A6B6E;
+  --color-textTertiary:  #7AACAF;
+  --color-textDisabled:  #B0CCCE;
+  --color-textOnBrand:   #FFFFFF;
+  --color-textOnAccent:  #3D2E00;
+  --color-textBrand:     #0D7377;
+  --color-textAccent:    #A07800;
+ 
+  /* ── Border ── */
+  --color-borderDefault: #C8DEDE;
+  --color-borderSubtle:  #E4F0F0;
+  --color-borderStrong:  #7AACAF;
+  --color-borderBrand:   #0D7377;
+  --color-borderAccent:  #F2C94C;
+ 
+  /* ── State / Feedback ── */
+  --color-stateSuccess:       #14A085;
+  --color-stateSuccessSubtle: #D4F0EA;
+  --color-stateWarning:       #F2C94C;
+  --color-stateWarningSubtle: #FEF7DC;
+  --color-stateError:         #D94F4F;
+  --color-stateErrorSubtle:   #FDEAEA;
+  --color-stateInfo:          #0D7377;
+  --color-stateInfoSubtle:    #D6EFEE;
+ 
 }
-
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.147 0.004 49.3);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.147 0.004 49.3);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.147 0.004 49.3);
-  --primary: oklch(0.508 0.118 165.612);
-  --primary-foreground: oklch(0.979 0.021 166.113);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.96 0.002 17.2);
-  --muted-foreground: oklch(0.547 0.021 43.1);
-  --accent: oklch(0.96 0.002 17.2);
-  --accent-foreground: oklch(0.214 0.009 43.1);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0.005 34.3);
-  --input: oklch(0.922 0.005 34.3);
-  --ring: oklch(0.714 0.014 41.2);
-  --chart-1: oklch(0.905 0.182 98.111);
-  --chart-2: oklch(0.795 0.184 86.047);
-  --chart-3: oklch(0.681 0.162 75.834);
-  --chart-4: oklch(0.554 0.135 66.442);
-  --chart-5: oklch(0.476 0.114 61.907);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.986 0.002 67.8);
-  --sidebar-foreground: oklch(0.147 0.004 49.3);
-  --sidebar-primary: oklch(0.596 0.145 163.225);
-  --sidebar-primary-foreground: oklch(0.979 0.021 166.113);
-  --sidebar-accent: oklch(0.96 0.002 17.2);
-  --sidebar-accent-foreground: oklch(0.214 0.009 43.1);
-  --sidebar-border: oklch(0.922 0.005 34.3);
-  --sidebar-ring: oklch(0.714 0.014 41.2);
-}
-
-.dark {
-  --background: oklch(0.147 0.004 49.3);
-  --foreground: oklch(0.986 0.002 67.8);
-  --card: oklch(0.214 0.009 43.1);
-  --card-foreground: oklch(0.986 0.002 67.8);
-  --popover: oklch(0.214 0.009 43.1);
-  --popover-foreground: oklch(0.986 0.002 67.8);
-  --primary: oklch(0.432 0.095 166.913);
-  --primary-foreground: oklch(0.979 0.021 166.113);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.268 0.011 36.5);
-  --muted-foreground: oklch(0.714 0.014 41.2);
-  --accent: oklch(0.268 0.011 36.5);
-  --accent-foreground: oklch(0.986 0.002 67.8);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.547 0.021 43.1);
-  --chart-1: oklch(0.905 0.182 98.111);
-  --chart-2: oklch(0.795 0.184 86.047);
-  --chart-3: oklch(0.681 0.162 75.834);
-  --chart-4: oklch(0.554 0.135 66.442);
-  --chart-5: oklch(0.476 0.114 61.907);
-  --sidebar: oklch(0.214 0.009 43.1);
-  --sidebar-foreground: oklch(0.986 0.002 67.8);
-  --sidebar-primary: oklch(0.696 0.17 162.48);
-  --sidebar-primary-foreground: oklch(0.262 0.051 172.552);
-  --sidebar-accent: oklch(0.268 0.011 36.5);
-  --sidebar-accent-foreground: oklch(0.986 0.002 67.8);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.547 0.021 43.1);
-}
-
+ 
+/* ============================================================
+   DARK MODE OVERRIDES
+   ============================================================ */
+ 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  html {
-    @apply font-sans;
+  .dark {
+ 
+    /* ── Surface — Base ── */
+    --color-surfaceBasePrimary:   #0A1A1A;
+    --color-surfaceBaseSecondary: #0F2424;
+    --color-surfaceBaseTertiary:  #163030;
+    --color-surfaceBaseInverse:   #E8F2F2;
+ 
+    /* ── Surface — Brand ── */
+    --color-surfaceBrandPrimary:  #0D7377;
+    --color-surfaceBrandSubtle:   #0F3535;
+ 
+    /* ── Surface — Accent ── */
+    --color-surfaceAccentPrimary: #F2C94C;
+    --color-surfaceAccentSubtle:  #2E2200;
+ 
+    /* ── Surface — Green ── */
+    --color-surfaceGreenPrimary:  #14A085;
+    --color-surfaceGreenSubtle:   #0A2E28;
+ 
+    /* ── Text ── */
+    --color-textPrimary:   #E8F5F5;
+    --color-textSecondary: #9ECECE;
+    --color-textTertiary:  #5A9090;
+    --color-textDisabled:  #2A5050;
+    --color-textOnBrand:   #FFFFFF;
+    --color-textOnAccent:  #3D2E00;
+    --color-textBrand:     #4ECFB8;
+    --color-textAccent:    #F2C94C;
+ 
+    /* ── Border ── */
+    --color-borderDefault: #1C4040;
+    --color-borderSubtle:  #122A2A;
+    --color-borderStrong:  #2A6060;
+    --color-borderBrand:   #0D7377;
+    --color-borderAccent:  #F2C94C;
+ 
+    /* ── State / Feedback ── */
+    --color-stateSuccess:       #4ECFB8;
+    --color-stateSuccessSubtle: #0A2E28;
+    --color-stateWarning:       #F2C94C;
+    --color-stateWarningSubtle: #2E2200;
+    --color-stateError:         #F08080;
+    --color-stateErrorSubtle:   #2E0A0A;
+    --color-stateInfo:          #4ECFB8;
+    --color-stateInfoSubtle:    #0F3535;
+ 
   }
 }
+ 
+/* ============================================================
+   USAGE EXAMPLES
+   ============================================================
+ 
+   Background:
+     bg-surfaceBasePrimary       → main page bg
+     bg-surfaceBaseSecondary     → card / panel
+     bg-surfaceBrandPrimary      → teal brand section
+     bg-surfaceAccentSubtle      → light gold highlight
+ 
+   Text:
+     text-textPrimary            → headings
+     text-textSecondary          → body copy
+     text-textBrand              → teal link / label
+     text-textOnBrand            → white text on teal bg
+ 
+   Border:
+     border-borderDefault        → standard card border
+     border-borderBrand          → teal outlined button
+     border-borderAccent         → gold badge border
+ 
+   State:
+     bg-stateSuccessSubtle + text-stateSuccess  → success badge
+     bg-stateErrorSubtle   + text-stateError    → error badge
+     bg-stateWarningSubtle + text-stateWarning  → pending badge
+ 
+   Opacity modifier (works because of @theme):
+     bg-surfaceBrandPrimary/20   → ghost teal overlay
+     text-textPrimary/60         → dimmed text
+ 
+   ============================================================ */
+ 

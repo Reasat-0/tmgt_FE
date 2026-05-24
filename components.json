@@ -13,11 +13,11 @@
   "iconLibrary": "lucide",
   "rtl": false,
   "aliases": {
-    "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
-    "lib": "@/lib",
-    "hooks": "@/hooks"
+    "components": "@/app/lib/components",
+    "utils": "@/app/lib/utils",
+    "ui": "@/app/lib/components/ui",
+    "lib": "@/app/lib",
+    "hooks": "@/app/hooks"
   },
   "menuColor": "default",
   "menuAccent": "subtle",
