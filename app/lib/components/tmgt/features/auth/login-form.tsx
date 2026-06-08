@@ -4,7 +4,7 @@
 
 import { ArrowRight, Loader2, Lock, Mail } from "lucide-react";
 import { ReactNode, SubmitEvent } from "react";
-import { TmgtInput } from "../../../base-components/tmgt-input";
+import { TmgtInput } from "../../base-components/tmgt-input";
 
 interface LoginFormProps {
   loading: boolean;
@@ -61,30 +61,15 @@ export function LoginForm({
             label="Password*"
             icon={<Lock size={17} />}
           />
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mt-2">
             <button
               type="button"
-              className="text-textBrand text-[12px] font-medium hover:underline"
+              className="text-textBrand text-xs font-medium hover:underline"
             >
               Forgot password?
             </button>
           </div>
         </div>
-      </div>
-
-      {/* Remember me */}
-      <div className="flex items-center gap-2.5">
-        <input
-          id="remember-me"
-          type="checkbox"
-          className="w-4 h-4 cursor-pointer accent-[color:var(--color-surfaceBrandPrimary)]"
-        />
-        <label
-          htmlFor="remember-me"
-          className="text-[13px] text-textSecondary cursor-pointer"
-        >
-          Remember me for 30 days
-        </label>
       </div>
 
       {/* CTA */}
