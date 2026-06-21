@@ -1,6 +1,6 @@
-import { ApiResultType } from "../types/common";
+import { ApiMetaType, ApiResponseType } from "../types/common";
 
-const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
+const API_BASE_URL = process.env.BASE_API_URL || "http://localhost:3000";
 
 interface backendFetchOptionsType {
   method?: string;
@@ -9,10 +9,24 @@ interface backendFetchOptionsType {
   cache?: RequestCache;
 }
 
+export class BackendError extends Error {
+  constructor(
+    public success: boolean = false,
+    public statusCode: number,
+    message: string,
+    public errors?: unknown,
+    public code?: string,
+    public meta?: ApiMetaType,
+  ) {
+    super(message);
+    this.name = "BackendError";
+  }
+}
+
 export async function backendFetch<T>(
   path: string,
   options: backendFetchOptionsType = {},
-): Promise<ApiResultType<T>> {
+): Promise<ApiResponseType<T>> {
   const { method = "GET", body, token, cache = "no-store" } = options || {};
 
   const url = `${API_BASE_URL}${path}`;
@@ -25,37 +39,34 @@ export async function backendFetch<T>(
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
+  let response: Response;
 
   try {
-    const response = await fetch(url, {
+    response = await fetch(url, {
       method,
       headers,
       body: body ? JSON.stringify(body) : undefined,
       cache,
     });
-    const json = await response.json().catch(() => null);
-    if (!response.ok) {
-      return {
-        success: false,
-        error: json?.message || "An error occurred while fetching data.",
-        code: json?.code || response.status,
-      };
-    }
-
-    return {
-      success: true,
-      data: json.data ?? json,
-      message: json.message,
-    };
   } catch (err) {
-    return {
-      success: false,
-      error:
-        err instanceof Error
-          ? err.message
-          : "An unknown error occurred while fetching data.",
-      code: "NETWORK_ERROR",
-      statusCode: 503,
-    };
+    throw new BackendError(
+      false,
+      503,
+      "Unable to connect to the backend server.",
+    );
   }
+
+  const res: ApiResponseType<T> = await response.json();
+
+  if (!res.success) {
+    throw new BackendError(
+      res.success,
+      res.statusCode as number,
+      res.message,
+      res.errors,
+      res.code,
+      res.meta,
+    );
+  }
+  return res;
 }
