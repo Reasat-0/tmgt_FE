@@ -2,23 +2,18 @@ import { ApiResultType } from "../types/common";
 
 const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
 
-interface fetcherOptionsType {
+interface backendFetchOptionsType {
   method?: string;
   body?: unknown;
-  accessToken?: string;
+  token?: string;
   cache?: RequestCache;
 }
 
-export async function fetcherFunction<T>(
+export async function backendFetch<T>(
   path: string,
-  options: fetcherOptionsType = {},
+  options: backendFetchOptionsType = {},
 ): Promise<ApiResultType<T>> {
-  const {
-    method = "GET",
-    body,
-    accessToken,
-    cache = "no-store",
-  } = options || {};
+  const { method = "GET", body, token, cache = "no-store" } = options || {};
 
   const url = `${API_BASE_URL}${path}`;
 
@@ -27,8 +22,8 @@ export async function fetcherFunction<T>(
     Accept: "application/json",
   };
 
-  if (accessToken) {
-    headers["Authorization"] = `Bearer ${accessToken}`;
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
   }
 
   try {
