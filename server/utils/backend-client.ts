@@ -27,15 +27,19 @@ export async function backendFetch<T>(
   path: string,
   options: backendFetchOptionsType = {},
 ): Promise<ApiResponseType<T>> {
+  // Step 1 : Taking all the options and setting default values for method and cache if not provided
   const { method = "GET", body, token, cache = "no-store" } = options || {};
 
+  // Step 2: Building the full URL by combining the base API URL with the provided path
   const url = `${API_BASE_URL}${path}`;
 
+  // Step 3: Setting up the headers for the request, including Content-Type and Accept headers. If a token is provided, it adds an Authorization header.
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     Accept: "application/json",
   };
 
+  // Step 4: If a token is provided, it adds an Authorization header with the Bearer token.
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }

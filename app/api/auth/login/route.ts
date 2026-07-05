@@ -7,7 +7,7 @@ export async function POST() {
 
 export async function GET(req: NextRequest) {
   try {
-    const res = await backendFetch("/posts", {
+    const res = await backendFetch("/api/auth/login", {
       method: "GET",
       cache: "no-store",
       token: "",
