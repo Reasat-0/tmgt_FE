@@ -1,11 +1,11 @@
 import { BackendError, backendFetch } from "@/server/utils/backend-client";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST() {
-  return NextResponse.json({ message: "Not implemented" }, { status: 501 });
-}
+// export async function POST() {
+//   return NextResponse.json({ message: "Not implemented" }, { status: 501 });
+// }
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
     const res = await backendFetch("/api/auth/login", {
       method: "GET",

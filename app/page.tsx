@@ -5,19 +5,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/lib/components/ui/card";
+import { Providers } from "./providers";
 
 export default function Home() {
   return (
-    <Card className="max-w-sm bg-surfaceAccentPrimary">
-      <CardHeader>
-        <CardTitle>Project Overview</CardTitle>
-        <CardDescription>
-          Track progress and recent activity for your Next.js app.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        Your design system is ready. Start building your next component.
-      </CardContent>
-    </Card>
+    <Providers>
+      <Card className="max-w-sm bg-surfaceAccentPrimary">
+        <CardHeader>
+          <CardTitle>Project Overview</CardTitle>
+          <CardDescription>
+            Track progress and recent activity for your Next.js app.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          Your design system is ready. Start building your next component.
+        </CardContent>
+      </Card>
+    </Providers>
   );
 }
