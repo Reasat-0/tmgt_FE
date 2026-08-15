@@ -2,6 +2,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { ReactNode } from "react";
 import { Input } from "../../../ui/input";
 import { InputFieldProps } from "./type";
+import { Field, FieldError, FieldLabel } from "../../../ui/field";
 
 /** Reusable labelled input with icon + optional eye toggle */
 export function TmgtInput({
@@ -17,34 +18,38 @@ export function TmgtInput({
   autoComplete,
   required,
   hint,
+  error,
 }: InputFieldProps): ReactNode {
   const isPassword = onToggle !== undefined;
   const resolvedType = isPassword ? (showPassword ? "text" : "password") : type;
 
   return (
-    <div className="flex flex-col gap-2">
-      <label
-        htmlFor={id}
-        className="text-[13px] font-semibold text-textPrimary"
-      >
-        {label}
-      </label>
+    <div className="flex">
+      <Field className="flex flex-col gap-1">
+        {label && (
+          <FieldLabel
+            htmlFor={id}
+            className="text-[13px] font-semibold text-textPrimary"
+          >
+            {label}
+          </FieldLabel>
+        )}
 
-      <div className="relative">
-        {/* Leading icon */}
-        <span className="absolute left-[15px] top-1/2 -translate-y-1/2 text-textDisabled pointer-events-none">
-          {icon}
-        </span>
+        <div className="relative">
+          {/* Leading icon */}
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-textDisabled pointer-events-none">
+            {icon}
+          </span>
 
-        <Input
-          id={id}
-          type={resolvedType}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          autoComplete={autoComplete}
-          required={required}
-          className="
+          <Input
+            id={id}
+            type={resolvedType}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            autoComplete={autoComplete}
+            required={required}
+            className="
                     border border-borderDefault 
                     rounded-lg 
                     w-full ps-11 pe-12 py-3.5
@@ -54,26 +59,30 @@ export function TmgtInput({
                     focus:ring-surfaceBrandSubtle focus:border-borderBrand
                     transition-all
                     "
-        />
+          />
 
-        {/* Eye toggle */}
-        {isPassword && (
-          <button
-            type="button"
-            onClick={onToggle}
-            aria-label={
-              showPassword ? "Hide password" : "showPassword password"
-            }
-            className="
-              absolute right-[14px] top-1/2 -translate-y-1/2
+          {/* Eye toggle */}
+          {isPassword && (
+            <button
+              type="button"
+              onClick={onToggle}
+              aria-label={
+                showPassword ? "Hide password" : "showPassword password"
+              }
+              className="
+              absolute right-3.5 top-1/2 -translate-y-1/2
               text-textDisabled hover:text-textTertiary
               transition-colors
             "
-          >
-            {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
-          </button>
+            >
+              {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
+            </button>
+          )}
+        </div>
+        {error && (
+          <FieldError className="text-red-500 text-sm">{error}</FieldError>
         )}
-      </div>
+      </Field>
 
       {hint}
     </div>

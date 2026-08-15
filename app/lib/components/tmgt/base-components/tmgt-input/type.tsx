@@ -16,4 +16,5 @@ export interface InputFieldProps {
   /** Slot rendered below the input (e.g. strength bar) */
   hint?: ReactNode;
   classNames?: string;
+  error?: string;
 }

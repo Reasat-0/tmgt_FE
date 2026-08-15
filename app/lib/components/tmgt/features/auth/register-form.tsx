@@ -1,5 +1,6 @@
 import { ArrowRight, Loader2, Lock, Mail, User } from "lucide-react";
 import { ChangeEvent, ReactNode, SubmitEvent } from "react";
+import { TmgtButton } from "../../base-components/tmgt-button";
 import { TmgtInput } from "../../base-components/tmgt-input";
 
 interface RegisterFormProps {
@@ -148,7 +149,7 @@ export function RegisterForm({
       </div>
 
       {/* CTA */}
-      <button
+      <TmgtButton
         type="submit"
         disabled={loading}
         className="
@@ -174,7 +175,7 @@ export function RegisterForm({
             Create Account <ArrowRight size={16} />
           </>
         )}
-      </button>
+      </TmgtButton>
 
       {/* Switch */}
       <p className="text-center text-sm text-textSecondary">

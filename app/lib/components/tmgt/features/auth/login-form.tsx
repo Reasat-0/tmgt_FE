@@ -4,7 +4,11 @@
 
 import { ArrowRight, Loader2, Lock, Mail } from "lucide-react";
 import { ReactNode, SubmitEvent } from "react";
+import { TmgtButton } from "../../base-components/tmgt-button";
 import { TmgtInput } from "../../base-components/tmgt-input";
+import z from "zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface LoginFormProps {
   loading: boolean;
@@ -14,6 +18,11 @@ interface LoginFormProps {
   onTogglePassword: () => void;
 }
 
+const loginSchema = z.object({
+  email: z.string().email({ message: "Invalid email" }),
+  password: z.string().min(6, { message: "Must be of 6 characters or more" }),
+});
+
 export function LoginForm({
   loading,
   onSubmit,
@@ -21,8 +30,26 @@ export function LoginForm({
   showPassword,
   onTogglePassword,
 }: LoginFormProps): ReactNode {
+  const loginForm = useForm<z.infer<typeof loginSchema>>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: zodResolver(loginSchema),
+  });
+  const { control, handleSubmit } = loginForm;
+
+  const onSubmitLogin = (data: z.infer<typeof loginSchema>) => {
+    // Handle login form submission
+    console.log(data);
+  };
+
   return (
-    <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
+    <form
+      onSubmit={handleSubmit(onSubmitLogin)}
+      noValidate
+      className="flex flex-col gap-5"
+    >
       {/* Heading */}
       <div className="mb-2">
         <h2 className="text-textPrimary text-[28px] font-extrabold tracking-tight mb-1.5">
@@ -39,28 +66,47 @@ export function LoginForm({
       <OrDivider label="or sign in with email" /> */}
 
       {/* Email */}
-      <TmgtInput
-        id="login-email"
-        label="Email address"
-        type="email"
-        placeholder="you@example.com"
-        icon={<Mail size={17} />}
-        autoComplete="email"
-        required
+
+      <Controller
+        control={control}
+        name="email"
+        render={({ field, fieldState: { error } }) => (
+          <TmgtInput
+            {...field}
+            id="login-email"
+            label="Email address"
+            type="email"
+            placeholder="you@example.com"
+            icon={<Mail size={17} />}
+            autoComplete="email"
+            required
+            error={error?.message}
+          />
+        )}
       />
 
       {/* Password */}
+
       <div className="flex flex-col gap-2">
         <div className="relative">
-          <TmgtInput
-            id="login-password"
-            type={showPassword ? "text" : "password"}
-            placeholder="••••••••"
-            autoComplete="current-password"
-            required
-            label="Password*"
-            icon={<Lock size={17} />}
+          <Controller
+            control={control}
+            name="password"
+            render={({ field, fieldState: { error } }) => (
+              <TmgtInput
+                {...field}
+                id="login-password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                autoComplete="current-password"
+                required
+                label="Password*"
+                icon={<Lock size={17} />}
+                error={error?.message}
+              />
+            )}
           />
+
           <div className="flex items-center justify-between mt-2">
             <button
               type="button"
@@ -73,7 +119,7 @@ export function LoginForm({
       </div>
 
       {/* CTA */}
-      <button
+      <TmgtButton
         type="submit"
         disabled={loading}
         className="
@@ -99,7 +145,7 @@ export function LoginForm({
             Sign In <ArrowRight size={16} />
           </>
         )}
-      </button>
+      </TmgtButton>
 
       {/* Switch */}
       <p className="text-center text-sm text-textSecondary">

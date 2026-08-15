@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const res = await backendFetch("/api/auth/login", {
-      method: "GET",
+      method: "POST",
       cache: "no-store",
       token: "",
     });
