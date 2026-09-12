@@ -2,13 +2,13 @@
 // LOGIN FORM
 // ─────────────────────────────────────────────────────────────
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Loader2, Lock, Mail } from "lucide-react";
 import { ReactNode, SubmitEvent } from "react";
+import { Controller, useForm } from "react-hook-form";
+import z from "zod";
 import { TmgtButton } from "../../base-components/tmgt-button";
 import { TmgtInput } from "../../base-components/tmgt-input";
-import z from "zod";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 interface LoginFormProps {
   loading: boolean;
@@ -19,8 +19,14 @@ interface LoginFormProps {
 }
 
 const loginSchema = z.object({
-  email: z.string().email({ message: "Invalid email" }),
-  password: z.string().min(6, { message: "Must be of 6 characters or more" }),
+  email: z
+    .string()
+    .nonempty("Email is required")
+    .email({ message: "Invalid email" }),
+  password: z
+    .string()
+    .nonempty("Password is required")
+    .min(6, { message: "Must be of 6 characters or more" }),
 });
 
 export function LoginForm({
