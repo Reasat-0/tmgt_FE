@@ -11,19 +11,20 @@ export type ApiMetaType = {
 
 export type ApiSuccessType<T> = {
   success: true;
-  data: T;
+  data?: T;
   message?: string;
   statusCode?: number;
   meta?: ApiMetaType;
 };
 
-export type ApiErrorType = {
+export type ApiErrorType<T> = {
   success: false;
   statusCode: number; // mirrors the HTTP status code
   message: string;
   errors?: unknown;
+  data?: T; // optional, in case the backend returns some data even on error
   code?: string; // machine-readable, e.g. "INVALID_CREDENTIALS"
   meta?: ApiMetaType;
 };
 
-export type ApiResponseType<T> = ApiSuccessType<T> | ApiErrorType;
+export type ApiResponseType<T> = ApiSuccessType<T> | ApiErrorType<T>;

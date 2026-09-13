@@ -1,3 +1,4 @@
+import { setAuthCookies } from "@/server/utils/auth";
 import { BackendError, backendFetch } from "@/server/utils/backend-client";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -7,11 +8,25 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const res = await backendFetch("/api/auth/login", {
+    const body = await req.json();
+    const res = await backendFetch<{
+      accessToken: string;
+      refreshToken?: string;
+      user: unknown;
+    }>("/api/auth/login", {
       method: "POST",
+      body,
       cache: "no-store",
-      token: "",
     });
+
+    if (res?.data?.accessToken) {
+      await setAuthCookies({
+        accessToken: res.data.accessToken,
+        // Will add refreshToken if provided by the backend
+      });
+    }
+
+    console.log(res);
 
     return NextResponse.json(res);
   } catch (error) {

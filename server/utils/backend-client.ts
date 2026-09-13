@@ -1,6 +1,6 @@
 import { ApiMetaType, ApiResponseType } from "../types/common";
 
-const API_BASE_URL = process.env.BASE_API_URL || "http://localhost:3000";
+const API_BASE_URL = process.env.BASE_API_URL || "http://localhost:5000";
 
 interface backendFetchOptionsType {
   method?: string;
