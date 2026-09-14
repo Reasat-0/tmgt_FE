@@ -1,5 +1,5 @@
 import { setAuthCookies } from "@/server/utils/auth";
-import { BackendError, backendFetch } from "@/server/utils/backend-client";
+import { BackendError, backendFetch } from "@/server/utils/backend-fetch";
 import { NextRequest, NextResponse } from "next/server";
 
 // export async function POST() {
