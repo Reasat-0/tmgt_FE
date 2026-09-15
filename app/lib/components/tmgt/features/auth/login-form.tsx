@@ -2,6 +2,7 @@
 // LOGIN FORM
 // ─────────────────────────────────────────────────────────────
 
+import { LoginRequestType, loginSchema } from "@/app/modules/auth/auth-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Loader2, Lock, Mail } from "lucide-react";
 import { ReactNode, SubmitEvent } from "react";
@@ -18,17 +19,6 @@ interface LoginFormProps {
   onTogglePassword: () => void;
 }
 
-const loginSchema = z.object({
-  email: z
-    .string()
-    .nonempty("Email is required")
-    .email({ message: "Invalid email" }),
-  password: z
-    .string()
-    .nonempty("Password is required")
-    .min(6, { message: "Must be of 6 characters or more" }),
-});
-
 export function LoginForm({
   loading,
   onSubmit,
@@ -36,7 +26,8 @@ export function LoginForm({
   showPassword,
   onTogglePassword,
 }: LoginFormProps): ReactNode {
-  const loginForm = useForm<z.infer<typeof loginSchema>>({
+  const loginForm = useForm<LoginRequestType>({
+    // LoginRequestType is inferred from the loginSchema using zod
     defaultValues: {
       email: "",
       password: "",
@@ -45,7 +36,7 @@ export function LoginForm({
   });
   const { control, handleSubmit } = loginForm;
 
-  const onSubmitLogin = (data: z.infer<typeof loginSchema>) => {
+  const onSubmitLogin = (data: z.infer<LoginRequestType>) => {
     // Handle login form submission
     console.log(data);
   };
