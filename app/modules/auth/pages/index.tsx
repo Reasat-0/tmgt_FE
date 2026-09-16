@@ -11,9 +11,9 @@
 
 "use client";
 
-import { LoginForm } from "@/app/lib/components/tmgt/features/auth/login-form";
 import { RegisterForm } from "@/app/lib/components/tmgt/features/auth/register-form";
 import { SubmitEvent, useState, type ReactNode } from "react";
+import { LoginForm } from "../components/login-form/login-form";
 
 // ─────────────────────────────────────────────────────────────
 // TYPES

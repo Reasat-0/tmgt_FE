@@ -2,14 +2,14 @@
 // LOGIN FORM
 // ─────────────────────────────────────────────────────────────
 
+import { TmgtButton } from "@/app/lib/components/tmgt/base-components/tmgt-button";
+import { TmgtInput } from "@/app/lib/components/tmgt/base-components/tmgt-input";
 import { LoginRequestType, loginSchema } from "@/app/modules/auth/auth-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Loader2, Lock, Mail } from "lucide-react";
 import { ReactNode, SubmitEvent } from "react";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
-import { TmgtButton } from "../../base-components/tmgt-button";
-import { TmgtInput } from "../../base-components/tmgt-input";
 
 interface LoginFormProps {
   loading: boolean;
