@@ -28,7 +28,7 @@ export async function setAuthCookies(tokens: AuthTokenPayload) {
 
   // 2. Set Refresh Token Cookie (if provided)
   if (tokens.refreshToken) {
-    cookieStore.set("refreshToken", tokens.refreshToken, {
+    cookieStore.set("refreshToken", refreshToken as string, {
       httpOnly: true,
       secure: isProduction,
       sameSite: "lax",

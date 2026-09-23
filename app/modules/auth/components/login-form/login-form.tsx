@@ -4,12 +4,13 @@
 
 import { TmgtButton } from "@/app/lib/components/tmgt/base-components/tmgt-button";
 import { TmgtInput } from "@/app/lib/components/tmgt/base-components/tmgt-input";
+import { Button } from "@/app/lib/components/ui/button";
 import { LoginRequestType, loginSchema } from "@/app/modules/auth/auth-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Loader2, Lock, Mail } from "lucide-react";
 import { ReactNode, SubmitEvent } from "react";
 import { Controller, useForm } from "react-hook-form";
-import z from "zod";
+import { useLogin } from "../../hooks/use-login";
 
 interface LoginFormProps {
   loading: boolean;
@@ -21,7 +22,6 @@ interface LoginFormProps {
 
 export function LoginForm({
   loading,
-  onSubmit,
   onSwitchTab,
   showPassword,
   onTogglePassword,
@@ -35,11 +35,7 @@ export function LoginForm({
     resolver: zodResolver(loginSchema),
   });
   const { control, handleSubmit } = loginForm;
-
-  const onSubmitLogin = (data: z.infer<LoginRequestType>) => {
-    // Handle login form submission
-    console.log(data);
-  };
+  const { onSubmitLogin, loginPending } = useLogin();
 
   return (
     <form
@@ -105,12 +101,12 @@ export function LoginForm({
           />
 
           <div className="flex items-center justify-between mt-2">
-            <button
+            <Button
               type="button"
               className="text-textBrand text-xs font-medium hover:underline"
             >
               Forgot password?
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -132,7 +128,7 @@ export function LoginForm({
           boxShadow: "0 6px 20px rgba(13,115,119,.35)",
         }}
       >
-        {loading ? (
+        {loginPending ? (
           <>
             <Loader2 size={17} className="animate-spin" />
             Signing in…

@@ -210,7 +210,7 @@ export default function AuthPageContent(): ReactNode {
   };
 
   return (
-    <div className="w-full max-w-[480px]">
+    <div className="w-full max-w-120">
       {/* Mobile-only logo */}
       <div className="flex lg:hidden flex-col items-center mb-8">
         <TmgtLogo size={64} />
@@ -218,7 +218,7 @@ export default function AuthPageContent(): ReactNode {
       </div>
 
       {/* ── Tab toggle ── */}
-      <div className="flex bg-surfaceBaseTertiary rounded-2xl p-[5px] mb-9 gap-1">
+      <div className="flex bg-surfaceBaseTertiary rounded-2xl p-1.5 mb-9 gap-1">
         {(["login", "register"] as AuthTab[]).map((t) => (
           <button
             key={t}

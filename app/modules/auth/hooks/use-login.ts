@@ -1,19 +1,26 @@
 import { useMutation } from "@tanstack/react-query";
-import z from "zod";
 import { LoginRequestType } from "../auth-schema";
 import { loginClientCaller } from "../utils/auth-client-caller";
 
-export function useLogin({ data }: { data: LoginRequestType }) {
-  const onSubmitLogin = (data: z.infer<LoginRequestType>) => {
+export function useLogin() {
+  const onSubmitLogin = (data: LoginRequestType) => {
     // Handle login form submission
-    console.log(data);
+    loginMutate(data);
   };
 
-  const loginMutate = useMutation({
-    mutationFn: () => loginClientCaller(),
+  const {
+    mutate: loginMutate,
+    data,
+    isPending: loginPending,
+  } = useMutation({
+    mutationFn: (value: LoginRequestType) => loginClientCaller(value),
+    onSuccess: () => {
+      alert("Login successful:");
+    },
   });
 
   return {
     onSubmitLogin,
+    loginPending,
   };
 }

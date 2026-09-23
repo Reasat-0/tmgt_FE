@@ -1,6 +1,6 @@
 import { ApiResponseType } from "../../../server/types/common";
 
-interface ClientFetcherConfig {
+export interface ClientFetcherConfig {
   method: "GET" | "POST" | "PUT" | "DELETE";
   body?: unknown;
 }
