@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
         errors: error.errors,
         code: error.code,
       };
-      return NextResponse.json(errorObj);
+      return NextResponse.json(errorObj, { status : error.statusCode || 500 });
     }
 
     // 6. Anything truly unexpected — don't leak internals to the client.

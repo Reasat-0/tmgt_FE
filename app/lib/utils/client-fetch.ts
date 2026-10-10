@@ -1,5 +1,23 @@
 import { ApiResponseType } from "../../../server/types/common";
 
+class ClientError extends Error {
+  code?: string; // eg: INVALID_CREDENTIALS, NETWORK_ERROR, etc.
+  statusCode?: number;
+  errors?: unknown;
+
+  constructor(
+    message: string,
+    options?: { code?: string; errors?: unknown; statusCode?: number },
+  ) {
+    super();
+    this.name = "ClientError";
+    this.message = message;
+    this.code = options?.code;
+    this.statusCode = options?.statusCode;
+    this.errors = options?.errors;
+  }
+}
+
 export interface ClientFetcherConfig {
   method: "GET" | "POST" | "PUT" | "DELETE";
   body?: unknown;
@@ -27,36 +45,33 @@ export async function clientFetch<T>(
     });
 
     const json = await response.json().catch(() => null);
+    console.log(response);
 
     if (!response.ok) {
-      return {
-        message: json?.message || "An unexpected error occurred.",
-        success: false,
-        code: json?.code, // e.g. "INVALID_CREDENTIALS"
-        statusCode: response.status,
-        errors: json?.errors, // Optional, in case the backend returns validation errors
-      };
+      throw new ClientError(
+        json?.message || "An error occurred while fetching data.",
+        {
+          errors: json?.errors,
+          code: json?.code,
+          statusCode: response.status,
+        },
+      );
     }
     return {
       success: true,
       data: (json?.data ?? json) as T,
       message: json?.message,
     };
-  } catch {
+  } catch (err) {
     // fetch() itself threw — no internet, Next.js is down, etc.
     // Return a consistent ApiError instead of crashing the app.
-    return {
-      success: false,
-      errors: "Could not reach the server. Please check your connection.",
-      code: "NETWORK_ERROR",
-      statusCode: 503,
-      message: "Could not reach the server. Please check your connection.",
-    };
+    throw new ClientError(
+      err instanceof Error ? err.message : "An unexpected error occurred.",
+      {
+        errors: "Could not reach the server. Please check your connection.",
+        code: "NETWORK_ERROR",
+        statusCode: 503,
+      },
+    );
   }
-
-  return Promise.resolve({
-    success: false,
-    statusCode: 501,
-    message: "Not implemented",
-  });
 }
