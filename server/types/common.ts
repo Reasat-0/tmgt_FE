@@ -11,19 +11,23 @@ export type ApiMetaType = {
 
 export type ApiSuccessType<T> = {
   success: true;
-  data: T;
-  message?: string;
-  statusCode?: number;
-  meta?: ApiMetaType;
+  message: string;
+  data?: T | undefined;
+  meta?: ApiMetaType | undefined;
+};
+
+export type FieldError = {
+  field: string;
+  message: string;
 };
 
 export type ApiErrorType = {
   success: false;
-  statusCode: number; // mirrors the HTTP status code
   message: string;
-  errors?: unknown;
-  code?: string; // machine-readable, e.g. "INVALID_CREDENTIALS"
-  meta?: ApiMetaType;
+  error: {
+    code: string;
+    details?: FieldError[] | undefined;
+  };
 };
 
 export type ApiResponseType<T> = ApiSuccessType<T> | ApiErrorType;
