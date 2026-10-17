@@ -1,32 +1,37 @@
-import { ApiMetaType, ApiResponseType } from "../types/common";
+
+import { ApiMetaType, ApiResponseType, ApiSuccessType, FieldError } from "../types/common";
 
 const API_BASE_URL = process.env.BASE_API_URL || "http://localhost:5000";
 
-interface backendFetchOptionsType {
+interface bffFetchOptionsType {
   method?: string;
   body?: unknown;
   token?: string;
   cache?: RequestCache;
 }
 
-export class BackendError extends Error {
+
+export class bffError extends Error {
   constructor(
-    public success: boolean = false,
     public statusCode: number,
     message: string,
-    public errors?: unknown,
-    public code?: string,
-    public meta?: ApiMetaType,
+    public code: string,
+    public success: boolean = false,
+    public errors?: FieldError[],
   ) {
     super(message);
-    this.name = "BackendError";
+    this.name = "bffError";
+    this.statusCode = statusCode;
+    this.code = code;
+    this.success = success;
+    this.errors = errors;
   }
 }
 
-export async function backendFetch<T>(
+export async function bffFetch<T>(
   path: string,
-  options: backendFetchOptionsType = {},
-): Promise<ApiResponseType<T>> {
+  options: bffFetchOptionsType = {},
+): Promise<ApiSuccessType<T>> {
   // Step 1 : Taking all the options and setting default values for method and cache if not provided
   const { method = "GET", body, token, cache = "no-store" } = options || {};
 
@@ -53,24 +58,32 @@ export async function backendFetch<T>(
       cache,
     });
   } catch (err) {
-    throw new BackendError(
-      false,
-      503,
-      "Unable to connect to the backend server.",
+    throw new bffError(
+      500,
+      "Unable to connect to the server.",
+      "BACKEND_UNAVAILABLE"
     );
   }
+  let responseJson: ApiResponseType<T>;
+  try {
+    responseJson = await response.json();
+  } catch {
+    // Upstream sent something that is not JSON
+    throw new bffError(502, "Invalid response from the server.", "BAD_GATEWAY");
+  }
 
-  const res: ApiResponseType<T> = await response.json();
 
-  if (!res.success) {
-    throw new BackendError(
-      res.success,
-      res.statusCode as number,
-      res.message,
-      res.errors,
-      res.code,
-      res.meta,
+  console.log("Backend response in BFFfetch......", responseJson);
+
+  if (!response.ok || !responseJson.success) {
+    const error = responseJson.success === false ? responseJson : undefined; // as the ApiResponseType<T> can be either ApiSuccessType<T> or ApiErrorType<T>
+    throw new bffError(
+      response.status as number,
+      responseJson.message as string,
+      error?.error?.code ?? "UNKNOWN_ERROR",
+      responseJson.success,
+      error?.error?.details
     );
   }
-  return res;
+  return responseJson;
 }
